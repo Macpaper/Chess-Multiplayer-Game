@@ -19,7 +19,7 @@ export default class CircleGuy {
     }
   }
   draw(ctx) {
-    ctx.fillStyle = "rgb(0, 50, 255)";
+    ctx.fillStyle = "rgb(255, 0, 0)";
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2, false);
     ctx.fill();
