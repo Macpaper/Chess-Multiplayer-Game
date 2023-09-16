@@ -1,13 +1,20 @@
 import Square from "./Square.js";
 class Board {
-  constructor(game, width = 800, height = 800, squareNum = 8) {
+  constructor(game) {
     // top left of board (idk if that's the best way to do it)
     this.game = game;
-    this.x = this.game.gameWidth / 4 + 200;
-    this.y = 50;
-    this.width = width;
-    this.height = height;
-    this.squareNum = squareNum;
+  
+    this.height = this.game.gameHeight / 4 * 3;
+    this.width = this.height;
+
+    if (this.game.gameHeight > this.game.gameWidth) {
+      this.width = this.game.gameWidth / 4 * 3;
+      this.height = this.width;
+    }
+
+    this.x = this.game.gameWidth / 2 - this.width / 2;
+    this.y = this.game.gameHeight / 2 - this.height / 2;
+    this.squareNum = 8;
     this.squareWidth = this.width / this.squareNum;
     this.squareHeight = this.height / this.squareNum;
 
@@ -36,7 +43,7 @@ class Board {
         let square = new Square(this.game, this.x + this.squareWidth * i, this.y + this.squareHeight * j, this.squareWidth, this.squareHeight, color, count, rank, file);
         this.game.squareMap.set(count, square);
         this.squares.push(square);
-        
+
         count += 1;
       }
     }
