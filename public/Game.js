@@ -124,6 +124,7 @@ export default class Game {
     // this.currentTurn = 'white';
   } // out of constructor
   update() {
+    console.log(this.turns);
     // show attackers got bored now
     // this.pieces.forEach(p => {
     //   if (p.team == 'white') {
@@ -220,7 +221,9 @@ export default class Game {
         s.piece = 'empty';
       }
     });
-
+    if (!this.boardState.state) {
+      this.boardState.setState(localStorage.getItem('gameState'));
+    }
     for(let rank = 0; rank < this.boardState.state.length; rank++) {
       for(let file = 0; file < this.boardState.state.length; file++) {
         // this goes IN ORDER!!
@@ -322,7 +325,7 @@ export default class Game {
 
     this.board.drawAttackers(ctx);
     this.input.draw(ctx)
-    
+
     ctx.fillStyle = "white";
     ctx.font = "bold 32px monospace";
     ctx.fillText("Current turn: " + this.turn, 25, 50);

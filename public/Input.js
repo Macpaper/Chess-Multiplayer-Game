@@ -93,6 +93,7 @@ export default class Input {
                         // console.log(this.game.boardState.state);
                         console.log("sending this baord info 1: ");
                         console.log(this.game.boardState.info);
+                        localStorage.setItem('gameState', this.game.boardState.getState());
                         this.game.socket.emit("next turn", this.game.boardState.state, this.game.boardState.info);
                       }
 
@@ -157,7 +158,7 @@ export default class Input {
       }
     });
   }
-  
+
   handleKeys(key, isPressed) {
     if (key == "ArrowLeft") {
       this.left = isPressed;

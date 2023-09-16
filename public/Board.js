@@ -12,6 +12,23 @@ class Board {
       this.height = this.width;
     }
 
+    window.addEventListener("resize", e => {
+      console.log("am i resizing?");
+      this.game.gameWidth = window.innerWidth;
+      this.game.gameHeight = window.innerHeight;
+
+      this.height = this.game.gameHeight / 4 * 3;
+      this.width = this.height;
+      
+      if (this.game.gameHeight > this.game.gameWidth) {
+        this.width = this.game.gameWidth / 4 * 3;
+        this.height = this.width;
+      }
+      this.squareWidth = this.width / this.squareNum;
+      this.squareHeight = this.height / this.squareNum;
+    });
+    
+
     this.x = this.game.gameWidth / 2 - this.width / 2;
     this.y = this.game.gameHeight / 2 - this.height / 2;
     this.squareNum = 8;
@@ -50,7 +67,12 @@ class Board {
   }
 
   update() {
-    this.squares.forEach(s => s.update());
+    this.squares.forEach(s => {
+      // implement user responsiveness later probably
+      // s.width = this.squareWidth;
+      // s.height = this.squareHeight;
+      s.update()
+    });
   }
 
   draw(ctx) {
