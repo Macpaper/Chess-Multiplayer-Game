@@ -124,7 +124,7 @@ export default class Game {
     // this.currentTurn = 'white';
   } // out of constructor
   update() {
-    console.log(this.turns);
+    // console.log(this.turns);
     // show attackers got bored now
     // this.pieces.forEach(p => {
     //   if (p.team == 'white') {

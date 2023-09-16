@@ -44,6 +44,7 @@ if (localStorage.getItem('room') == userID) {
   console.log("NEW GAME");
   localStorage.setItem('room', userID);
   localStorage.setItem('gameState', game.boardState.getState());
+  localStorage.setItem('turns', game.turns);
   console.log(localStorage.getItem('gameState'));
 }
 
