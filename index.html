@@ -9,13 +9,21 @@
       body,
       html {
         margin: 0 auto;
-        overflow: hidden;
       }
     </style>
-
+    <script src="/socket.io/socket.io.js"></script>
     <script src="app.js" type="module" defer></script>
   </head>
   <body>
-    <canvas></canvas>
+    <form id="copy-form" action="">
+      <p id="copy-text">Copy link then send to someone to play them</p>
+      <input type="text" value="placeholder until link is generated" id="copy-input" readonly>
+      <button id="copy-button">Copy</button>
+    </form>
+    <!-- <form id="join-form" action="">
+      <p>Join room:</p>
+      <input id="join-input" autocomplete="off" /><button>Send</button>
+    </form> -->
+    <canvas id="gameScreen"></canvas>
   </body>
 </html>
