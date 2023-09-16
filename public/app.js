@@ -33,8 +33,8 @@ copyForm.addEventListener('submit', e => {
   e.preventDefault();
   copyInput.select();
   copyInput.setSelectionRange(0, 99999);
-  navigator.clipboard.writeText(link);
-  copyButton.textContent = "Copied!";
+  // navigator.clipboard.writeText(link); ONLY WORKS IN HTTPS LMAO
+  // copyButton.textContent = "Copied!";
 });
 
 let myTurn = 'black';
