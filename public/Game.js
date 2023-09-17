@@ -62,7 +62,7 @@ export default class Game {
     this.board = new ChessBoard(this);
 
     this.boardState = new BoardState(this);
-    this.gameState = this.boardState.state;
+    this.gameState = this.boardState.getState();
     this.gameStates = [];
     this.gameStates.push(this.gameState);
     this.pieces = [];
@@ -331,9 +331,7 @@ export default class Game {
     ctx.fillText("Current turn: " + this.turn, 25, 50);
 
     if (this.drawCheckMate) {
-      console.log("HUH");
       if (this.turn == 'black') {
-        console.log("HI");
         ctx.fillStyle = "white";
         ctx.fillText("WHITE WINS!!!", 100, 200);
       } else {

@@ -125,17 +125,19 @@ export default class Piece {
     let playEmpty = (square.piece == 'empty');
 
     if (this.name == 'rook') {
-      if (this.position == 1) {
+      if (this.square.position == 1) {
         this.game.boardState.info.blackCastleL = false;
       }
-      if (this.position == 8) {
+      if (this.square.position == 8) {
         this.game.boardState.info.blackCastleR = false;
       }
-      if (this.position == 57) {
+      if (this.square.position == 57) {
         this.game.boardState.info.whiteCastleL = false;
       }
-      if (this.position == 64) {
+      console.log("the position of this man: " + this.position);
+      if (this.square.position == 64) {
         this.game.boardState.info.whiteCastleR = false;
+        console.log("huh rook move right?");
       }
     }
 
@@ -265,7 +267,10 @@ export default class Piece {
     }
 
 
-
+    localStorage.setItem('blackCastleR', this.game.boardState.info.blackCastleR);
+    localStorage.setItem('whiteCastleR', this.game.boardState.info.whiteCastleR);
+    localStorage.setItem('blackCastleL', this.game.boardState.info.blackCastleL);
+    localStorage.setItem('whiteCastleL', this.game.boardState.info.whiteCastleL);
     this.game.boardState.updateState(square.position, this.gameStateTeam + this.gameStatePiece);
     console.log("NEW GAME STATE: ");
     console.log(this.game.gameState);

@@ -33,6 +33,11 @@ if (localStorage.getItem('room') == userID) {
   let newState = game.boardState.convertState(localStorage.getItem('gameState'));
   game.boardState.setState(newState);
   game.turns = localStorage.getItem('turns');
+  game.boardState.info.blackCastleR = localStorage.getItem('blackCastleR');
+  game.boardState.info.whiteCastleR = localStorage.getItem('whiteCastleR');
+  game.boardState.info.blackCastleL = localStorage.getItem('blackCastleL');
+  game.boardState.info.whiteCastleL = localStorage.getItem('whiteCastleL');
+
   if (game.turns % 2 == 1) {
     game.turn = 'white';
   } else {
@@ -94,7 +99,13 @@ socket.on("increment turn", (state, info) => {
     console.log("just given this state:");
     console.log(state);
     game.boardState.setState(state);
+
     localStorage.setItem('gameState', game.boardState.getState());
+    localStorage.setItem('blackCastleR', info.blackCastleR);
+    localStorage.setItem('whiteCastleR', info.whiteCastleR);
+    localStorage.setItem('blackCastleL', info.blackCastleL);
+    localStorage.setItem('whiteCastleL', info.whiteCastleL);
+
     game.boardState.info = info;
   }
 });
