@@ -8,6 +8,7 @@ export default class Pawn extends Piece {
     this.enPassantable = false;
     this.promoteSquare = null;
     this.drawPromotion = false;
+    // this.square.piece = this;
     if (this.updateState) {
       this.game.boardState.updateState(square.position, this.gameStateTeam + this.gameStatePiece);
     }

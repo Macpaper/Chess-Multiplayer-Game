@@ -21,7 +21,7 @@ export default class Game {
     this.knightImgW = new Image();
     this.queenImgW = new Image();
     this.kingImgW = new Image();
-
+    
     this.pawnImgB = new Image();
     this.bishopImgB = new Image();
     this.rookImgB = new Image();
@@ -215,15 +215,36 @@ export default class Game {
     let count = 0;
     // rank = row, file = col
     // console.log(this.gameState);
+    console.log("before empty squares: ")
+    this.board.squares.forEach(s => {
+      if (s.piece.name) {
+        console.log(s.piece.name);
+      }
+    });
+
     this.board.squares.forEach(s => {
       if(s.piece != 'empty') {
         s.piece.deleted = true;
         s.piece = 'empty';
       }
     });
+    this.pieces = this.pieces.filter(p => !p.deleted);
+    console.log("after empty squares: ");
+    this.board.squares.forEach(s => {
+      if (s.piece.name) {
+        console.log(s.piece.name);
+      }
+    });
+
+
+
+    console.log("OLD STATE: ");
+    console.log(JSON.parse(JSON.stringify(this.boardState.state)));
+  
     if (!this.boardState.state) {
       this.boardState.setState(localStorage.getItem('gameState'));
     }
+
     for(let rank = 0; rank < this.boardState.state.length; rank++) {
       for(let file = 0; file < this.boardState.state.length; file++) {
         // this goes IN ORDER!!
@@ -236,9 +257,18 @@ export default class Game {
           if (arr[0] == 'b') {
             team = 'black';
           }
+          if(this.pawnEnPassant) {
+            if (this.pawnEnPassant.square == square) {
+              
+              this.pawnEnPassant.square.piece = 'empty';
+              this.pawnEnPassant.deleted = true;
+              this.pawnEnPassant = null;
+            }
+          }
           if (arr[1] == 'p') {
             let img = (team == 'white' ? this.pawnImgW : this.pawnImgB);
-            new Pawn(this, x, y, team, square, img);
+            
+            let pawn = new Pawn(this, x, y, team, square, img);
           }
           if (arr[1] == 'n') {
             let img = (team == 'white' ? this.knightImgW : this.knightImgB);
@@ -261,6 +291,10 @@ export default class Game {
             new Queen(this, x, y, team, square, img);
           }
           // en passant
+          // holy shit is it jus tbecause i didnt finish it here?
+          // if (arr[1] == 'e') {
+          //   new PawnPassant(this, team, pawn, this.squareMap.get(square.position));
+          // }
         }
         count += 1;
       }
@@ -282,16 +316,16 @@ export default class Game {
           if (arr[1] == 'e' && arr[0] != 'e') {
             let pawn;
             if (arr[0] == 'b') {
-              console.log("square b: " + (square.position + 8));
+              // console.log("square b: " + (square.position + 8));
               // en passant is created before pawn is created here. need to do this.
               pawn = this.squareMap.get(square.position + 8).piece
             } else {
               
-              console.log("square w: " + (square.position - 8));
+              // console.log("square w: " + (square.position - 8));
               pawn = this.squareMap.get(square.position - 8).piece
             }
-            console.log("adding en passant to? " + square.position);
-            console.log(pawn);
+            // console.log("adding en passant to? " + square.position);
+            // console.log(pawn);
             new PawnPassant(this, team, pawn, this.squareMap.get(square.position));
           }
         }
@@ -300,7 +334,8 @@ export default class Game {
     } // out of double for loop
 
     console.log("NEW STATE: ");
-    console.log(this.boardState.state);
+    console.log(JSON.parse(JSON.stringify(this.boardState.state)));
+
   }
 
   draw(ctx) {;

@@ -60,6 +60,7 @@ export default class Input {
           }
           if (!this.clicking) {
             if(this.clickingCheck && !this.game.noneSelected()) {
+
               this.clickingCheck = false;
               this.game.pawnPromote = null;
               this.game.pieces.forEach(p => {
@@ -70,9 +71,10 @@ export default class Input {
               });
 
               // s.piece = this.game.selectedSquare.piece;
-
               if (this.game.turn == this.game.selectedSquare.piece.team) {
                 if (s != this.game.selectedSquare) { // <--- MAKES SURE YOURE RELEASING ON A DIFFERENT SQUARE
+                  // console.log("BEFORE CHAOS: ");
+                  // console.log(JSON.parse(JSON.stringify(this.game.boardState.state)));
                   // console.log("here 2 " + s.piece);
                   if (s.piece == 'empty') { // <---- MOVES TO EMPTY SQUARE
                     if (this.game.turn == this.game.myTurn && this.game.selectedSquare.piece.validMove(s)) {
@@ -87,11 +89,13 @@ export default class Input {
                         // do this in socket client so that both boards update. the current turn 
                         // will update using frontend, enemy will be told to update with server 
                         // frontend will update from server message.
-
+                        // i REALLY NEED TO UPDATE THE FUCKING STATE HERe. WHY AM I UPDATING IT SOMEWHERE ELSE????
+                        // WHERE THE HELL DO I UPDATE IT? WHY DOES IT HAPPEN BEFORE THE PIECE MOVE? HOW DOES IT HAPPEn
+                        // BEFORE THE PIECE MOVE? THIS IMPLEMENTATION SUCKS 
                         // this.game.turns += 1;
                         // this.game.turn = (this.game.turn == 'white' ? 'black' : 'white');
-                        // console.log(this.game.boardState.state);
-                        console.log("sending this baord info 1: ");
+                        console.log("sending this baord state (NOT CAPTURE! (after chaos)) 1: ");
+                        console.log(JSON.parse(JSON.stringify(this.game.boardState.state)));
                         console.log(this.game.boardState.info);
                         localStorage.setItem('gameState', this.game.boardState.getState());
                         this.game.socket.emit("next turn", this.game.boardState.state, this.game.boardState.info);
@@ -112,9 +116,14 @@ export default class Input {
                         // s is the new square
                         // selectedSquare is the old square after this move
                         this.game.selectedSquare.piece.pieceTo(s);
-                        console.log("sending this baord info 2: ");
-                        console.log(this.game.boardState.info);
+                        console.log("sending this baord info (CAPTURE PIECE!) 2: ");
+                        console.log(this.game.boardState.state);
+                        // console.log(this.game.boardState.info);
+                        // ALL THE BOARD STATE BELONG TO IN SESSION STORE. NOBODY ELSE!!! PLAYERS PLAYING IMAGINARY GAME,
+                        // REAL GAME IS IN SESSION STORE. OPTIMIZATION OPPORTUNITY: ONLY UPDATE WHAT NEEDS TO BE UPDATED
+                        // INSTEAD OF SENDING THE ENTIRE STATE EVERY TIME. BUT WHO CARES RN???
                         this.game.socket.emit("next turn", this.game.boardState.state, this.game.boardState.info);
+                        this.game.socket.emit("test", {someObject: {lol:"cats"}});
                         // this.game.turns += 1;
                         // this.game.turn = (this.game.turn == 'white' ? 'black' : 'white');
                       }

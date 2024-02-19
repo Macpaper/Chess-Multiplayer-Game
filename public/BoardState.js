@@ -9,10 +9,13 @@ export default class BoardState {
       blackCastleL: true,
       whiteCastleL: true
     };
+    this.updated = false;
+  }
+  update() {
 
   }
-
   setState(state) {
+
     this.state = state;
     this.game.setNewState();
   }
@@ -70,7 +73,6 @@ export default class BoardState {
         count += 1;
       }
     }
-
     this.game.gameStates.push(this.game.gameState);
   }
   // some random test state

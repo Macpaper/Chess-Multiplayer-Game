@@ -121,9 +121,10 @@ export default class Piece {
 
   // does a full move. moves drawing, sets square of piece to new square, sets piece of square to this, sets old square to empty
   pieceTo(square) {
+
     this.game.boardState.updateState(this.square.position, 'ee');
     let playEmpty = (square.piece == 'empty');
-
+    
     if (this.name == 'rook') {
       if (this.square.position == 1) {
         this.game.boardState.info.blackCastleL = false;
@@ -145,13 +146,33 @@ export default class Piece {
     if (square.piece.name == 'enPassant' && this.name == 'pawn' && square.piece.team != this.game.selectedSquare.piece.team) {
       this.removePiece(square.piece.pawn);
     }
-  
+
+    // if killed a rook
+    if (square.piece.name == 'rook' && square.position == 1) {
+      this.game.boardState.info.blackCastleL = false;
+    }
+    if (square.piece.name == 'rook' && square.position == 8) {
+      this.game.boardState.info.blackCastleR = false;
+    }
+    if (square.piece.name == 'rook' && square.position == 57) {
+      this.game.boardState.info.whiteCastleL = false;
+    }
+    if (square.piece.name == 'rook' && square.position == 64) {
+      this.game.boardState.info.whiteCastleR = false;
+    }
+    
+
+    // THIS IS FUCKING IT RIGHT HERE
+    console.log("BEFORE REMOVING IN PIECE");
+    console.log(JSON.parse(JSON.stringify(this.game.boardState.state)));
     // remove the en passant that exists if it does
     if (this.game.pawnEnPassant) {
-      this.removePiece(this.game.pawnEnPassant);
-      this.game.pawnEnPassant = null;
+        console.log(this.game.pawnEnPassant.name);
+        this.removePiece(this.game.pawnEnPassant);
+        this.game.pawnEnPassant = null;
     } 
-    
+    console.log("AFTER REMOVING SHIT");
+    console.log(JSON.parse(JSON.stringify(this.game.boardState.state)));
 
     // IF PAWN IS MOVING UP TWICE (EN PASSANT)
     if (this.name == 'pawn') {
@@ -216,7 +237,6 @@ export default class Piece {
 
     this.firstMove = false;
     if (this.name == 'king') {
-      console.log("NIGGAS SET TO FALSE?");
       if (this.team == 'black') {
         this.game.boardState.info.blackCastleL = false;
         this.game.boardState.info.blackCastleR = false;
@@ -266,14 +286,15 @@ export default class Piece {
       }
     }
 
-
+    console.log("after update possible state: ");
+    console.log(this.game.boardState.state);
     localStorage.setItem('blackCastleR', this.game.boardState.info.blackCastleR);
     localStorage.setItem('whiteCastleR', this.game.boardState.info.whiteCastleR);
     localStorage.setItem('blackCastleL', this.game.boardState.info.blackCastleL);
     localStorage.setItem('whiteCastleL', this.game.boardState.info.whiteCastleL);
     this.game.boardState.updateState(square.position, this.gameStateTeam + this.gameStatePiece);
-    console.log("NEW GAME STATE: ");
-    console.log(this.game.gameState);
+    // console.log("NEW GAME STATE: ");
+    // console.log(this.game.gameState);
   }
 
   drawMoveCircle(x, y, ctx) {
