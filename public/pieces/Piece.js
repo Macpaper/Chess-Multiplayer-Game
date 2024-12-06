@@ -216,7 +216,6 @@ export default class Piece {
 
     this.firstMove = false;
     if (this.name == 'king') {
-      console.log("NIGGAS SET TO FALSE?");
       if (this.team == 'black') {
         this.game.boardState.info.blackCastleL = false;
         this.game.boardState.info.blackCastleR = false;
